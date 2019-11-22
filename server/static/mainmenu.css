@@ -1,0 +1,37 @@
+button {
+    background: rgb(255,255,255,.8);
+}
+body {
+    background-color: rgb(52, 141, 204);
+}
+
+#cases_button:hover {
+    border-radius:67px;
+    border: 1px rgb(246,246,246) solid;
+}
+
+#clients_button:hover {
+    border-radius:67px;
+    border: 1px rgb(246,246,246) solid;
+}
+
+#menu-icon-grid-container {
+    display: grid;
+    grid-template-columns: .75fr 1fr 1.5fr 1fr .75fr;
+    grid-gap: 20px;
+}
+
+#menu-icon-grid-container div {
+    display:flex;
+    align-items: center;      /* new */
+    justify-content: center;  /* new */
+}
+
+#menu-icon-grid-container .icondiv {
+    padding: 25px;
+}
+
+#header {
+    color: rgb(70, 139, 199);
+    font-family: arial;
+}

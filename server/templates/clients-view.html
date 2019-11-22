@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title>Client List</title>
+  </head>
+  <body>
+    <h2><center>Clients</center></h2>
+    <br>
+    <ul>
+    {% for client in clients %}
+    <li><a href="/client-view?client_id={{ client._id }}">{{ client.name }}</a>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

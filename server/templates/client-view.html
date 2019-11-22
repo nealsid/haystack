@@ -1,0 +1,14 @@
+<html>
+  <head>
+    <title>{{ client.name }}</title>
+  </head>
+  <body>
+    <h2><center>{{ client.name }}</center></h2>
+    <br>
+    <ul>
+    {% for case in cases %}
+    <li><a href="/case-view?case_id={{case._id}}">{{ case.name }}</a>
+      {% endfor %}
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,23 @@
+#header-grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+#header-grid-container div {
+    display:flex;
+    align-items: center;      /* new */
+    justify-content: center;  /* new */
+    height: 50px;
+}
+
+#header {
+    color: gray;
+}
+
+
+#input_grid_item input {
+    border-radius: 50px;
+    border-color: lightgray;
+    border: 2px dashed;
+    height: 50px;
+}

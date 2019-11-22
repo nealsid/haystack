@@ -1,0 +1,13 @@
+{% autoescape false %}
+<div id="search-result-container">
+{% for a in results.docs %}
+<div class="sr-grid"></div>
+<div class="searchresult sr-grid">
+  <a href="/case-view?case_id={{ a.case_dbid }}">Case</a><br>
+  {{ results.highlighting[a.id]['file_text'][0] }}
+</div>
+<div class="sr-grid"></div>
+{% endfor %}
+</div>
+{% endautoescape %}
+

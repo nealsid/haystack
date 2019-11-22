@@ -1,0 +1,103 @@
+<html>
+  <head>
+    <title>{{ case.name }}</title>
+    <script type="text/javascript" src="/static/jquery-3.4.1-min.js"></script>
+    <script type="text/javascript" src="/static/case-view.js"></script>
+    <link rel=stylesheet href="/static/case-view.css">
+    <script>
+      function deleteSavedSearch(savedSearchId) {
+	  $.ajax( {
+	      url: `/delete-saved-search?case_id={{ case._id }}&id=${savedSearchId}`,
+	      success: function(result) {
+		  window.location.reload();
+	      }
+	  });
+      }
+
+      function performSavedSearch(query) {
+	  $("#searchinput").val(query);
+	  $("#searchbutton").click();
+      }
+      $(document).ready(function () {
+          $("#searchbutton").click(function() {
+              let searchQuery = $("#searchinput").val();
+              $.ajax({
+                  url: `/case-file-search?case_id={{ case._id }}&query=${searchQuery}`,
+                  success: function(result) {
+                      $("#search-results").html(result);
+                  }
+              });
+          });
+
+          $("#savesearchbutton").click(function() {
+	      let searchQuery = $("#searchinput").val();
+	      window.location.assign(`/add-saved-search?case_id={{ case._id }}&query=${searchQuery}`);
+              // $.ajax({
+              //     url: `/add-saved-search?case_id={{ case._id }}&query=${searchQuery}`,
+              //     success: function(result) {
+	      // 	      var existingUrl = window.location.href;
+	      // 	      if (existingUrl.indexOf('?') != -1) {
+	      // 		  existingUrl += '&';
+	      // 	      } else {
+	      // 		  existingUrl += '?';
+	      // 	      }
+	      // 	      existingUrl.replace(/initialSearch=[^&\n]+/, '');
+	      // 	      existingUrl += `initialSearch=${searchQuery}`;
+	      // 	      console.log(existingUrl);
+	      // 	      window.location.assign(existingUrl);
+              //     }
+              // });
+	  });
+
+	  let initialSavedSearch = "{{ initialSavedSearch }}";
+	  if (initialSavedSearch !== "") {
+	      performSavedSearch(initialSavedSearch);
+	  }
+      });
+      </script>
+  </head>
+  <body id="case-view-body">
+    <h2><center>{{ case.name }}</center></h2>
+    <h2><center>for <a href="/client-view?client_id={{ client._id }}">{{ client.name }}</a></center></h2>
+    <br>
+    <div id="case-data-container">
+      <div id="files-box">
+	<center><h2>Files</h2></center>
+        <ul>
+          {% for file in case_files %}
+          <li><a href="/file-view?file_gridfs_id={{ file.gridfs_id }}">{{ file.name }}</a>
+            (<a href="/ocr-file?file_gridfs_id={{ file.gridfs_id }}">ocr</a>)
+            (<a href="/extract-text-from-file?file_gridfs_id={{ file.gridfs_id }}">extract text</a>)
+            {% endfor %}
+        </ul>
+
+        <form enctype="multipart/form-data" action="/upload-file" method="POST">
+          <input type=file name="file">
+          <input type=submit>
+          <input type=hidden name=case_id value={{ case._id }}>
+        </form>
+      </div>
+      <div id="saved-searches-box">
+	<div style="grid-column: 1 / span 3;">
+	  <center><h2>Saved searches</h2></center>
+	</div>
+        {% for a in saved_searches %}
+        <div class="saved-search-entry"> <a href="" onclick="performSavedSearch('{{ a.query }}'); return false;">{{ a.query }}</a></div>
+	<div></div>
+	<div class="saved-search-entry"><a href="" onclick="deleteSavedSearch('{{ a._id }}'); return false;">Delete</a></div>
+        {% endfor %}
+	<p>
+      </div>
+      </div>
+    <br>
+    </div>
+    <br>
+    <center>
+      <input id="searchinput" type=text size=50 name="searchquery">
+      <input id="searchbutton" type="submit" value="Search">
+      <input id="savesearchbutton" type="submit" value="Save Search">
+    </center>
+    <div id="search-results">
+    </div>
+  </body>
+</html>
